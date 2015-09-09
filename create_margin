@@ -1,0 +1,32 @@
+clean_na<-function(d){
+  for (i in 1:ncol(d)){
+    if (is.numeric(d[,i])){
+      d[,i][is.na(d[,i])]<-0
+    }
+    else if (is.integer(d[,i])){
+      d[,i][is.na(d[,i])]<-0
+    }
+    else if (is.logical(d[,i])){
+      d[,i][is.na(d[,i])]<-FALSE
+    }
+  }
+  return (d)
+}
+
+
+create_margin<-function(d){
+  mean_margin<-mean(d$Sales.Standard.Margin)
+  d[,"mean_margin_hit"]<-3
+  for (i in 1:nrow(d)){
+    if(d[i,"Sales.Standard.Margin"]>=mean_margin){
+      d[i,"mean_margin_hit"]<-1
+    }
+    else d[i,"mean_margin_hit"]<-0
+  }
+  return (d)
+}
+
+tree_prep<-function(d){
+  d<-clean_na(d)
+  d<-create_margin(d)  
+}
